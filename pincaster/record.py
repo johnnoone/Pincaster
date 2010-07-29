@@ -63,7 +63,7 @@ class CoordsDescriptor(object):
         self.cache = {}
     
     def __get__(self, instance, owner=None):
-        return self.cache.get(id(instance), (None, None))
+        return self.cache.get(id(instance), None)
     
     def __set__(self, instance, value):
         x, y = value
@@ -207,7 +207,7 @@ class Record(dict):
         self._srv_attrs = response
         self._special_cmds.clear()
         
-        return data, response
+        return True
     
     def _put_data(self):
         p = self.copy()

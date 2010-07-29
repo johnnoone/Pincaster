@@ -22,7 +22,8 @@ class Layer(dict):
         status = response['status']
         if status not in ('created', 'existing'):
             raise Exception('Unexpected status, `%s` given.' % status)
-        return status
+        
+        return True
     
     def delete(self):
         """
