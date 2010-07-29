@@ -16,16 +16,17 @@ Installation
 Usage
 =====
 
-.. code-block:: python
-
+::
+    
     >>> from pincaster import *
     >>> pincaster = Pincaster('127.0.0.1', 4269)
     >>> france = Layer('france', pincaster)
     >>> france.save()
     True
     
-    # Create Paris
-    
+Create Paris
+
+::    
     >>> paris = Record('paris', france)
     >>> paris.update({
     ...   'what': 'city',
@@ -37,8 +38,9 @@ Usage
     >>> paris.save()
     True
     
-    Time passes, a new birth in Paris, atomicaly increment population
-    
+Time passes, a new birth in Paris, atomicaly increment population
+
+::    
     >>> pincaster = Pincaster('127.0.0.1', 4269)
     >>> france =  pincaster['france']
     >>> paris = france['paris']
