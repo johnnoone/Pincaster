@@ -2,6 +2,8 @@ __all__ = ['Layer']
 
 from record import *
 from exceptions import *
+from utils import extract_coords
+
 
 class Layer(dict):
     __slots__ = ('name', 'pincaster', '_properties')
@@ -123,6 +125,7 @@ class Layer(dict):
         
         """
         
+        coords = extract_coords(coords)
         point = '%.3f,%.3f' % coords
         
         params = {
@@ -140,7 +143,7 @@ class Layer(dict):
         response = command(path, 'GET', data=params)
         matches = response.get('matches', [])
         
-        return [Record(layer=self, **m) for m in matches]
+        return RecordSet([Record(layer=self, **m) for m in matches])
     
     def in_rect(self, rect, limit=None, with_properties=True):
         """
@@ -178,7 +181,7 @@ class Layer(dict):
         response = command(path, 'GET', data=params)
         matches = response.get('matches', [])
         
-        return [Record(layer=self, **m) for m in matches]
+        return RecordSet([Record(layer=self, **m) for m in matches])
     
     def fetch_range(self, prefix, limit=None, keys_only=False, with_properties=True):
         """
@@ -221,9 +224,9 @@ class Layer(dict):
         
         if 'matches' in response:
             matches = response.get('matches', [])
-            return [Record(layer=self, **m) for m in matches]
+            return RecordSet([Record(layer=self, **m) for m in matches])
         elif 'keys' in response:
-            return response['keys']
+            return KeySet(response['keys'])
         
         raise Exception('Unexcepted!')
     
@@ -233,3 +236,29 @@ class Layer(dict):
     def fetch_keys(self, prefix, limit=None, with_properties=None):
         return self.fetch_range(prefix, limit=None, keys_only=False, with_properties=None)
     
+class RecordSet(tuple):
+    def __contains__(self, other):
+        
+        try:
+            key = other.key
+        except AttributeError:
+            if isinstance(other, (str, unicode)):
+                key = other
+            else:
+                raise Exception('Record instance or key only')
+        
+        return any(key == item.key for item in self)
+        
+        
+
+class KeySet(tuple):
+    def __contains__(self, other):
+        if isinstance(other, Record):
+            key = other.key
+            return any(key == item for item in self)
+        elif isinstance(other, (str, unicode)):
+            key = other
+            return any(key == item for item in self)
+        
+        raise Exception('Record instance or key only')
+        

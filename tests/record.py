@@ -147,3 +147,59 @@ class RecordTestCase(unittest.TestCase):
         assert abcd == {'name': u'MacDonalds', 'visits': 100127, 'address': u'blabla'}
         assert abcd._put_data() == {'name': u'MacDonalds', 'visits': 100127, 'address': u'blabla'}
     
+    def test_around(self):
+        first = self.layer['first']
+        first.coords = 48.054, 12.001
+        first.save()
+
+        second = self.layer['second']
+        second.coords = 48.024, 12.100
+        second.save()
+
+        third = self.layer['third']
+        third.coords = 48.07, 12.0501
+        third.save()
+
+        z = self.layer['z']
+        z.save()
+        
+        records = third.around(limit=200, radius=7000)
+        
+        assert len(records) == 3
+        assert first in records
+        assert 'first' in records
+        assert first in records
+        assert 'first' in records
+        assert 'aze' not in records
+        assert z not in records
+        
+        self.assertRaises(TypeError, z.around, limit=200, radius=7000)
+    
+
+    def test_around(self):
+        first = self.layer['first']
+        first['name'] = 'Foo'
+        first.coords = 48.054, 12.001
+        first.save()
+        print first
+        print first.coords
+        
+        second = self.layer['second']
+        second['name'] = 'Bar'
+        second.coords = 48.024, 12.100
+        second.save()
+        print second
+        print second.coords
+        
+        third = self.layer['third']
+        third['name'] = 'Baz'
+        third.coords = 48.07, 12.0501
+        third.save()
+        print third
+        print third.coords
+        
+        records = third.around(limit=200, radius=7000)
+        print records
+        
+        
+        

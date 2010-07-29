@@ -5,6 +5,7 @@ from server import ServerTestCase
 from record import RecordTestCase
 from search import SearchTestCase
 from atomicity import AtomicityTestCase
+from coords import CoordsTestCase
 
 def all_tests():
     suite = unittest.TestSuite()
@@ -13,5 +14,6 @@ def all_tests():
     suite.addTest(unittest.makeSuite(RecordTestCase))
     suite.addTest(unittest.makeSuite(SearchTestCase))
     suite.addTest(unittest.makeSuite(AtomicityTestCase))
+    suite.addTest(unittest.makeSuite(CoordsTestCase))
     return suite
     

@@ -67,3 +67,4 @@ class UnixDatetime(int):
         if not getattr(self, '_dt', False):
             self._dt = datetime.datetime(self)
         return self._dt
+    

@@ -250,4 +250,14 @@ class Record(dict):
         else:
             if response['status'] != 'deleted':
                 raise Exception('Wrong status')
+    
+    def around(self, radius=None, limit=None, with_properties=True):
+        """
+        Returns every points around this one
+        """
         
+        if self.coords is None:
+            raise TypeError('Coords cannot be None')
+        
+        return self.layer.nearby(coords=self.coords, radius=radius, limit=limit, with_properties=with_properties)
+    
