@@ -174,4 +174,3 @@ class RecordTestCase(unittest.TestCase):
         assert z not in records
         
         self.assertRaises(TypeError, z.around, limit=200, radius=7000)
-    
