@@ -8,7 +8,7 @@ This is the Python interface to the Pincaster server store.
 Installation
 ============
 
-#. Download the package in your computer.
+#. Download the package in your computer. (https://github.com/johnnoone/Pincaster)
 
 #. Run ``python setup.py install`` and you're done.
 
@@ -33,8 +33,8 @@ Create Paris
     
     >>> paris = Record('paris', france)
     >>> paris.update({
-    ...   'what': 'city',
-    ...   'population': 2193031
+    ...     'what': 'city',
+    ...     'population': 2193031
     ... })
     >>> paris
     {'what': 'city', 'population': 2193031}
@@ -46,8 +46,6 @@ Time passes, a new birth in Paris, atomicaly increment population
 
 ::
     
-    >>> pincaster = Pincaster('127.0.0.1', 4269)
-    >>> france =  pincaster['france']
     >>> paris = france['paris']
     >>> paris['population'] += 1
     >>> paris
@@ -68,7 +66,7 @@ Linked records
     True
     >>> donald = diznyland['donald']
     >>> donald.update({
-    ... 'first_name': 'Donald',
+    ...     'first_name': 'Donald',
     ...     'last_name': 'Duck',
     ... })
     >>> donald.save()
@@ -95,7 +93,7 @@ Linked records
     {'visits': 100000, 'name': u'MacDonalds', 'closed': 1, 'address': u'blabla'}
 
     >>> # Downloads again donald
-    >>> d1 = self.layer['donald']
+    >>> d1 = diznyland['donald']
     >>> a1 = d1.links['favorite_restaurant']
     >>> d1
     {'first_name': u'Donald', 'last_name': u'Duck', '$link:favorite_restaurant': u'abcd'}
@@ -106,7 +104,7 @@ Linked records
     >>> del d1
 
     >>> # Downloads again donald, with linked records
-    >>> d2 = self.layer.get_record('donald', download_links=True)
+    >>> d2 = diznyland.get_record('donald', download_links=True)
     >>> a2 = d2.links['favorite_restaurant']
     >>> d2['$link:favorite_restaurant']
     abcd
